@@ -7,6 +7,8 @@ public class Movement : MonoBehaviour
     public Rigidbody rb;
     public Vector3 impulse = new Vector3(0.0f, 5.0f, 0.0f);
     public float distance = 1;
+    public float repeat = 0.1f;
+    public bool autoImpulse = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,8 +20,30 @@ public class Movement : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            rb.AddForce(impulse, ForceMode.Impulse);
+            AddImpulseToRock();
         }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            if (!autoImpulse)
+            {
+                InvokeRepeating("AddImpulseToRock", 0, repeat);
+                autoImpulse = true;
+            }
+            else
+            {
+                CancelInvoke("AddImpulseToRock");
+                autoImpulse = false;
+            }
+                
+        }
+
+    }
+
+
+    void AddImpulseToRock()
+    {
+        rb.AddForce(impulse, ForceMode.Impulse);
     }
 
     
